@@ -37,38 +37,13 @@ Resources:
           - Outputs.VpcId
       TemplateURL: https://s3.amazonaws.com/sb1-trial-cf-bucket/5a817b78fe4756bd1e2ad5156d4975f6.template
     Type: AWS::CloudFormation::Stack
-  CodePipelineSystem:
-    Properties:
-      Parameters:
-        ALBListener:
-          Fn::GetAtt:
-          - ALB
-          - Outputs.ALBListener
-        CodeBuildContainerSpringBootDocker:
-          Ref: CodeBuildContainerSpringBootDocker
-        CodeCommitRepo: springboot-sample
-        ECRRepositoryBaseName:
-          Ref: TeamName
-        ECSCluster:
-          Fn::GetAtt:
-          - ECSCluster
-          - Outputs.ECSCluster
-        EnvironmentName:
-          Fn::Sub: ${AWS::StackName}-${TeamName}
-        MicroServiceName: spring-sample
-        VpcId:
-          Fn::GetAtt:
-          - ECSCluster
-          - Outputs.VpcId
-      TemplateURL: https://s3.amazonaws.com/sb1-trial-cf-bucket/dcb68fc21abc8c7762895c3078390c0a.template
-    Type: AWS::CloudFormation::Stack
   ECSCluster:
     Properties:
       Parameters:
         AsgMaxSize: 2
         EcsClusterName:
           Fn::Sub: ${AWS::StackName}-EcsCluster-${TeamName}
-        EcsInstanceType: m3.medium
+        EcsInstanceType: t2.small
         EnvironmentName:
           Fn::Sub: ${AWS::StackName}-${TeamName}
         KeyName:

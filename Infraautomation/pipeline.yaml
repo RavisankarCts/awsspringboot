@@ -27,11 +27,11 @@ Parameters:
   GitHubSecret:
     Type: String
     Default: Qazws123@
-    NoEcho: true
+    #NoEcho: true
   GitHubOAuthToken:
     Type: String
     Default: 4eaf72470520f9305c6fa23d0e3870d5ae75fd42
-    NoEcho: true
+    #NoEcho: true
   ApplicationName:
     Description: CodeDeploy application name
     Type: String
@@ -231,22 +231,22 @@ Resources:
             Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepositoryBaseName}-${MicroServiceName}
       ServiceRole: !Ref CodeBuildServiceRole
   
-  AppPipelineWebhook:
-    Type: 'AWS::CodePipeline::Webhook'
-    Properties:
-      Authentication: GITHUB_HMAC
-      AuthenticationConfiguration:
-        SecretToken: !Ref GitHubSecret
-      Filters:
-        - JsonPath: $.ref
-          MatchEquals: 'refs/heads/{Branch}'
-      TargetPipeline: !Ref Pipeline
-      TargetAction: SourceAction
-      Name: AppPipelineWebhook
-      TargetPipelineVersion: !GetAtt 
-        - Pipeline
-        - Version
-      RegisterWithThirdParty: true
+  # AppPipelineWebhook:
+  #   Type: 'AWS::CodePipeline::Webhook'
+  #   Properties:
+  #     Authentication: GITHUB_HMAC
+  #     AuthenticationConfiguration:
+  #       SecretToken: !Ref GitHubOAuthToken
+  #     Filters:
+  #       - JsonPath: $.ref
+  #         MatchEquals: 'refs/heads/{Branch}'
+  #     TargetPipeline: !Ref Pipeline
+  #     TargetAction: App
+  #     Name: AppPipelineWebhook
+  #     TargetPipelineVersion: !GetAtt 
+  #       - Pipeline
+  #       - Version
+  #     RegisterWithThirdParty: true
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline

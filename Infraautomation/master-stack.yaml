@@ -40,7 +40,7 @@ Resources:
             TemplateURL: ./VPC-ECS-2AZ.yaml
             Parameters:
                 EcsClusterName: !Sub ${AWS::StackName}-EcsCluster-${TeamName}
-                EcsInstanceType: "m3.medium"
+                EcsInstanceType: "t2.small"
                 AsgMaxSize: 2
                 EnvironmentName: !Sub ${AWS::StackName}-${TeamName}
                 KeyName: !Ref KeyPair
@@ -56,17 +56,17 @@ Resources:
                 PubELBSubnets: !GetAtt ECSCluster.Outputs.PubELBSubnets
                 ElbSecurityGroup: !GetAtt ECSCluster.Outputs.ElbSecurityGroup
 
-    # pipelines for microservices
-    CodePipelineSystem:
-        Type: AWS::CloudFormation::Stack
-        Properties:
-            TemplateURL: ./Pipeline.yaml
-            Parameters:
-                EnvironmentName: !Sub ${AWS::StackName}-${TeamName}
-                CodeCommitRepo: "springboot-sample"
-                MicroServiceName: "spring-sample"
-                CodeBuildContainerSpringBootDocker: !Ref CodeBuildContainerSpringBootDocker
-                VpcId: !GetAtt ECSCluster.Outputs.VpcId
-                ALBListener: !GetAtt ALB.Outputs.ALBListener
-                ECSCluster: !GetAtt ECSCluster.Outputs.ECSCluster
-                ECRRepositoryBaseName: !Ref TeamName
+    # # pipelines for microservices
+    # CodePipelineSystem:
+    #     Type: AWS::CloudFormation::Stack
+    #     Properties:
+    #         TemplateURL: ./Pipeline.yaml
+    #         Parameters:
+    #             EnvironmentName: !Sub ${AWS::StackName}-${TeamName}
+    #             CodeCommitRepo: "springboot-sample"
+    #             MicroServiceName: "spring-sample"
+    #             CodeBuildContainerSpringBootDocker: !Ref CodeBuildContainerSpringBootDocker
+    #             VpcId: !GetAtt ECSCluster.Outputs.VpcId
+    #             ALBListener: !GetAtt ALB.Outputs.ALBListener
+    #             ECSCluster: !GetAtt ECSCluster.Outputs.ECSCluster
+    #             ECRRepositoryBaseName: !Ref TeamName
